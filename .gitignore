@@ -1,0 +1,10 @@
+target/*
+test/*
+build/*
+target/*
+.settings/*
+.classpath
+.project
+*.log
+*.log.*
+*.yml

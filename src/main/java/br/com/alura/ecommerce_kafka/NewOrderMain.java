@@ -7,6 +7,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
 
 import java.util.Properties;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 public class NewOrderMain {
@@ -14,11 +15,12 @@ public class NewOrderMain {
         //ENVIAR UMA MENSAGEM NO KAFKA
         KafkaProducer producer = new KafkaProducer<String, String>(properties());
 
+        String key = UUID.randomUUID().toString();
         //MENSAGEM QUE EU QUERO MANDAR
-        String value = "132123,67523,10000";
+        String value = key + ",67523,10000";
 
         //CRIAR REGISTRO DO PRODUCER
-        ProducerRecord record = new ProducerRecord("ECOMMERCE_NEW_ORDER", value, value);
+        ProducerRecord record = new ProducerRecord("ECOMMERCE_NEW_ORDER", key, value);
 
         //CALBACK PARA AGUARDAR E PEGAR A RESPOSTA ASSIM QUE CHEGAR
         Callback callback = (data, ex) -> {
@@ -35,7 +37,7 @@ public class NewOrderMain {
         producer.send(record, callback).get();
 
         String email = "Obrigado por sua New Order!";
-        ProducerRecord<String,String> emailRecord = new ProducerRecord<>("ECOMMERCE_SEND_EMAIL", email, email);
+        ProducerRecord<String,String> emailRecord = new ProducerRecord<>("ECOMMERCE_SEND_EMAIL", key, email);
         //ENVIAR UM E-MAIL PARA VERIFICAR
         producer.send(emailRecord, callback).get();
     }

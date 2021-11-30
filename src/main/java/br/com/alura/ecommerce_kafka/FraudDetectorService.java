@@ -9,6 +9,7 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Properties;
+import java.util.UUID;
 
 public class FraudDetectorService {
     public static void main(String[] args) {
@@ -57,6 +58,9 @@ public class FraudDetectorService {
 
         //TEM QUE FALAR O ID DO GRUPO QUE NESTE CASO É O NOME DA CLASS
         properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, FraudDetectorService.class.getSimpleName());
+
+        //SETAR O NOME DO MEU CONSUMIDOR
+        properties.setProperty(ConsumerConfig.CLIENT_ID_CONFIG, FraudDetectorService.class.getSimpleName() + UUID.randomUUID().toString());
         return properties;
     }
 }

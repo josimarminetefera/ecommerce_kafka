@@ -15,12 +15,8 @@ public class NewOrderMain {
         //ENVIAR UMA MENSAGEM NO KAFKA
         KafkaProducer producer = new KafkaProducer<String, String>(properties());
 
+        //CHAVE DO PRODUTOR
         String key = UUID.randomUUID().toString();
-        //MENSAGEM QUE EU QUERO MANDAR
-        String value = key + ",67523,10000";
-
-        //CRIAR REGISTRO DO PRODUCER
-        ProducerRecord record = new ProducerRecord("ECOMMERCE_NEW_ORDER", key, value);
 
         //CALBACK PARA AGUARDAR E PEGAR A RESPOSTA ASSIM QUE CHEGAR
         Callback callback = (data, ex) -> {
@@ -32,10 +28,18 @@ public class NewOrderMain {
             System.out.println("sucesso " + data.topic() + ":::partition " + data.partition() + " /offset " + data.offset() + " /timestamp " + data.timestamp());
         };
 
+        //PRODUTOR 1 DE MENSAGEM
+        //MENSAGEM QUE EU QUERO MANDAR
+        String value = key + ",67523,10000";
+
+        //CRIAR REGISTRO DO PRODUCER
+        ProducerRecord record = new ProducerRecord("ECOMMERCE_NEW_ORDER", key, value);
+
         //PARA ENVIAR UMA MESAGEM send
         //ENVIAR MENSAGEM E COM get()
         producer.send(record, callback).get();
 
+        //PRODUTOR 2 DE MENSAGEM
         String email = "Obrigado por sua New Order!";
         ProducerRecord<String,String> emailRecord = new ProducerRecord<>("ECOMMERCE_SEND_EMAIL", key, email);
         //ENVIAR UM E-MAIL PARA VERIFICAR

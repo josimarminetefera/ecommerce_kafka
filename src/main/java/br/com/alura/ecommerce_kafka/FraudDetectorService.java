@@ -61,6 +61,9 @@ public class FraudDetectorService {
 
         //SETAR O NOME DO MEU CONSUMIDOR
         properties.setProperty(ConsumerConfig.CLIENT_ID_CONFIG, FraudDetectorService.class.getSimpleName() + UUID.randomUUID().toString());
+
+        //MAXIMO DE REGISTRO QUE EU QUERO CONSUMIR
+        properties.setProperty(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, "1");
         return properties;
     }
 }

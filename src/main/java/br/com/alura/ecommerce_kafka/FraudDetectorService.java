@@ -1,22 +1,14 @@
 package br.com.alura.ecommerce_kafka;
 
-import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.apache.kafka.clients.consumer.ConsumerRecords;
-import org.apache.kafka.clients.consumer.KafkaConsumer;
-import org.apache.kafka.common.serialization.StringDeserializer;
-
-import java.time.Duration;
-import java.util.Collections;
-import java.util.Properties;
-import java.util.UUID;
 
 public class FraudDetectorService {
     public static void main(String[] args) {
         System.out.println("Iniciando FraudDetectorService() ............");
         FraudDetectorService fraudDetectorService = new FraudDetectorService();
-        KafkaService kafkaService = new KafkaService(FraudDetectorService.class.getSimpleName(),"ECOMMERCE_NEW_ORDER", fraudDetectorService::parse);
-        kafkaService.run();
+        try (KafkaService kafkaService = new KafkaService(FraudDetectorService.class.getSimpleName(), "ECOMMERCE_NEW_ORDER", fraudDetectorService::parse)) {
+            kafkaService.run();
+        }
     }
 
     //CADA RECORD (REGISTRO) VAI CHAMAR ESTA FUNÇÃO

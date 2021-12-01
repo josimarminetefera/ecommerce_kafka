@@ -13,57 +13,25 @@ import java.util.UUID;
 
 public class FraudDetectorService {
     public static void main(String[] args) {
-        //CRIAR O CNSUMIDOR DAS MENSAGENS
-        KafkaConsumer consumer = new KafkaConsumer<String, String>(properties());
-        //PARA CONSUMIR A MENSAGEM subscribe
-        consumer.subscribe(Collections.singletonList("ECOMMERCE_NEW_ORDER"));
-        System.out.println("Iniciando...........");
-        while (true) {
-            //VERIFICAR SE TEM MENSAGEM DENTRO DO CONSUMIDOR ISSO RETORNA VÁRIOS REGISTROS
-            ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
-
-            if (!records.isEmpty()) {
-                System.out.println("Verificando.................");
-                System.out.println("Encontrei " + records.count() + " registros!");
-
-                for (ConsumerRecord<String, String> record : records) {
-                    System.out.println("-----------------------------------------------------");
-                    System.out.println("Procesando new order: ");
-                    System.out.println(record.key());
-                    System.out.println(record.value());
-                    System.out.println(record.partition());
-                    System.out.println(record.offset());
-                    try {
-                        Thread.sleep(5000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    System.out.println("New order processada");
-                }
-
-            }
-
-        }
+        System.out.println("Iniciando FraudDetectorService() ............");
+        FraudDetectorService fraudDetectorService = new FraudDetectorService();
+        KafkaService kafkaService = new KafkaService(FraudDetectorService.class.getSimpleName(),"ECOMMERCE_NEW_ORDER", fraudDetectorService::parse);
+        kafkaService.run();
     }
 
-    private static Properties properties() {
-        Properties properties = new Properties();
-
-        //ONDE VAI BUSCAR AS MENSAGENS
-        properties.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:9092");
-
-        //AS KEY E VALUE TEM QUE SER DESCRIPTOGRAFADO DE BYTE PARA STRING
-        properties.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
-        properties.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
-
-        //TEM QUE FALAR O ID DO GRUPO QUE NESTE CASO É O NOME DA CLASS
-        properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, FraudDetectorService.class.getSimpleName());
-
-        //SETAR O NOME DO MEU CONSUMIDOR
-        properties.setProperty(ConsumerConfig.CLIENT_ID_CONFIG, FraudDetectorService.class.getSimpleName() + UUID.randomUUID().toString());
-
-        //MAXIMO DE REGISTRO QUE EU QUERO CONSUMIR
-        properties.setProperty(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, "1");
-        return properties;
+    //CADA RECORD (REGISTRO) VAI CHAMAR ESTA FUNÇÃO
+    private void parse(ConsumerRecord<String, String> record) {
+        System.out.println("-----------------------------------------------------");
+        System.out.println("Processando Fraude Detector: ");
+        System.out.println("key: " + record.key());
+        System.out.println("value: " + record.value());
+        System.out.println("partition: " + record.partition());
+        System.out.println("offset: " + record.offset());
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Fraude Detector Processada");
     }
 }

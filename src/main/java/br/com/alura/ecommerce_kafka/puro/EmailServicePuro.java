@@ -10,7 +10,7 @@ import java.time.Duration;
 import java.util.Collections;
 import java.util.Properties;
 
-public class EmailService {
+public class EmailServicePuro {
     public static void main(String[] args) {
         //CRIAR O CONSUMIDOR DAS MENSAGENS
         KafkaConsumer consumer = new KafkaConsumer<String, String>(properties());
@@ -20,11 +20,9 @@ public class EmailService {
         while (true) {
             //VERIFICAR SE TEM MENSAGEM DENTRO DO CONSUMIDOR ISSO RETORNA VÁRIOS REGISTROS
             ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
-
             if (!records.isEmpty()) {
                 System.out.println("Verificando.................");
                 System.out.println("Encontrei " + records.count() + " registros!");
-
                 for (ConsumerRecord<String, String> record : records) {
                     System.out.println("-----------------------------------------------------");
                     System.out.println("Procesando send email: ");
@@ -39,9 +37,7 @@ public class EmailService {
                     }
                     System.out.println("Send email processado");
                 }
-
             }
-
         }
     }
 
@@ -56,7 +52,7 @@ public class EmailService {
         properties.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
 
         //TEM QUE FALAR O ID DO GRUPO QUE NESTE CASO É O NOME DA CLASS
-        properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, EmailService.class.getSimpleName());
+        properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, EmailServicePuro.class.getSimpleName());
         return properties;
     }
 }

@@ -15,11 +15,13 @@ class KafkaProdutor implements Closeable {
     private final KafkaProducer<String, String> producer;
 
     KafkaProdutor() {
+        System.out.println("Iniciando KafkaProdutor() ............");
         //ESTANCIANDO O PRODUTOR
         this.producer = new KafkaProducer<String, String>(properties());
     }
 
     private static Properties properties() {
+        System.out.println("Iniciando KafkaProdutor() ------ properties()");
         Properties properties = new Properties();
         //ONDE VAI CONECTAR O KAFKA
         properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:9092");
@@ -30,6 +32,7 @@ class KafkaProdutor implements Closeable {
     }
 
     void send(String topic, String key, String value) throws ExecutionException, InterruptedException {
+        System.out.println("Iniciando KafkaProdutor() ------ send()");
         //CALBACK PARA AGUARDAR E PEGAR A RESPOSTA ASSIM QUE CHEGAR
         Callback callback = (data, ex) -> {
             //ESCUTAR O RETORNO DA MENSAGEM

@@ -5,10 +5,12 @@ import java.util.concurrent.ExecutionException;
 
 public class NewOrderMain {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
+        System.out.println("Iniciando NewOrderMain() ............");
         try (KafkaProdutor kafkaProdutor = new KafkaProdutor()) {
             for (int i = 0; i < 10; i++) {
                 //CHAVE DO PRODUTOR
                 String key = UUID.randomUUID().toString();
+                System.out.println("Novo produto: " + key);
 
                 //MENSAGEM QUE EU QUERO MANDAR
                 String value = key + ";123456456;JOSIMAR VENTURIM MINETE;15000";

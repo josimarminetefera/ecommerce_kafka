@@ -12,13 +12,13 @@ import java.util.Collections;
 import java.util.Properties;
 import java.util.UUID;
 
-class KafkaService implements Closeable {
+class KafkaConsumerService implements Closeable {
 
     //CRIAR O CONSUMIDOR DAS MENSAGENS
     private final KafkaConsumer<String, String> consumer;
     private final ConsumerFunction parse;
 
-    KafkaService(String grupoNome, String topic, ConsumerFunction parse) {
+    KafkaConsumerService(String grupoNome, String topic, ConsumerFunction parse) {
         System.out.println("Iniciando KafkaService() ............");
         this.parse = parse;
         //INICIAR O CONSUMIDOR DAS MENSAGENS
@@ -29,7 +29,7 @@ class KafkaService implements Closeable {
 
     //FUNÇÃO PARA EXECUTAR O CONSUMIDOR
     void run() {
-        System.out.println("Iniciando run() ............");
+        System.out.println("Iniciando KafkaService() ----- run()");
         while (true) {
             //VERIFICAR SE TEM MENSAGEM DENTRO DO CONSUMIDOR ISSO RETORNA VÁRIOS REGISTROS
             //ISSO DEPENDENDO DO MAX_POLL_RECORDS_CONFIG
@@ -45,7 +45,7 @@ class KafkaService implements Closeable {
     }
 
     private static Properties properties(String grupoNome) {
-        System.out.println("Iniciando properties() ............");
+        System.out.println("Iniciando KafkaService() ----- properties()");
         Properties properties = new Properties();
 
         //ONDE VAI BUSCAR AS MENSAGENS

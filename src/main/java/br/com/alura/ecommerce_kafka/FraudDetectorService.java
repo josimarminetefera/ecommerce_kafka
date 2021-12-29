@@ -6,8 +6,8 @@ public class FraudDetectorService {
     public static void main(String[] args) {
         System.out.println("Iniciando FraudDetectorService() ............");
         FraudDetectorService fraudDetectorService = new FraudDetectorService();
-        try (KafkaService kafkaService = new KafkaService(FraudDetectorService.class.getSimpleName(), "ECOMMERCE_NEW_ORDER", fraudDetectorService::parse)) {
-            kafkaService.run();
+        try (KafkaConsumerService kafkaConsumerService = new KafkaConsumerService(FraudDetectorService.class.getSimpleName(), "ECOMMERCE_NEW_ORDER", fraudDetectorService::parse)) {
+            kafkaConsumerService.run();
         }
     }
 

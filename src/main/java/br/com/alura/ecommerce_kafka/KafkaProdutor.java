@@ -15,7 +15,7 @@ class KafkaProdutor<T> implements Closeable {
     private final KafkaProducer<String, T> producer;
 
     KafkaProdutor() {
-        System.out.println("Iniciando KafkaProdutor() ............");
+        System.out.println("Iniciando KafkaProdutor() Construtor ............");
         //ESTANCIANDO O PRODUTOR
         this.producer = new KafkaProducer<String, T>(properties());
     }
@@ -27,7 +27,7 @@ class KafkaProdutor<T> implements Closeable {
         properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:9092");
         //TEM QUE TRANSFORMAR A KEY E O VALOR DO KafkaProducer DE STRING PARA BYTE
         properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, GsonSerializer.class.getName());
-        properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+        properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, GsonSerializer.class.getName());
         return properties;
     }
 

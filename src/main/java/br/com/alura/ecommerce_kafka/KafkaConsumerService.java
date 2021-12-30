@@ -11,6 +11,7 @@ import java.time.Duration;
 import java.util.Collections;
 import java.util.Properties;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 class KafkaConsumerService implements Closeable {
 
@@ -18,18 +19,30 @@ class KafkaConsumerService implements Closeable {
     private final KafkaConsumer<String, String> consumer;
     private final ConsumerFunction parse;
 
-    KafkaConsumerService(String grupoNome, String topic, ConsumerFunction parse) {
-        System.out.println("Iniciando KafkaService() ............");
+    private KafkaConsumerService(ConsumerFunction parse, String grupoNome) {
+        System.out.println("Iniciando KafkaConsumerService() Construtor 0 ............");
         this.parse = parse;
         //INICIAR O CONSUMIDOR DAS MENSAGENS
         this.consumer = new KafkaConsumer<String, String>(properties(grupoNome));
+    }
+
+    KafkaConsumerService(String grupoNome, String topic, ConsumerFunction parse) {
+        this(parse, grupoNome);
+        System.out.println("Iniciando KafkaConsumerService() Construtor 1 ............");
         //PARA CONSUMIR A MENSAGEM subscribe
         this.consumer.subscribe(Collections.singletonList(topic));
     }
 
+    KafkaConsumerService(String grupoNome, Pattern topic, ConsumerFunction parse) {
+        this(parse, grupoNome);
+        System.out.println("Iniciando KafkaConsumerService() Construtor 2 ............");
+        //PARA CONSUMIR A MENSAGEM subscribe
+        this.consumer.subscribe(topic);
+    }
+
     //FUNÇÃO PARA EXECUTAR O CONSUMIDOR
     void run() {
-        System.out.println("Iniciando KafkaService() ----- run()");
+        System.out.println("Iniciando KafkaConsumerService() ----- run()");
         while (true) {
             //VERIFICAR SE TEM MENSAGEM DENTRO DO CONSUMIDOR ISSO RETORNA VÁRIOS REGISTROS
             //ISSO DEPENDENDO DO MAX_POLL_RECORDS_CONFIG
@@ -45,7 +58,7 @@ class KafkaConsumerService implements Closeable {
     }
 
     private static Properties properties(String grupoNome) {
-        System.out.println("Iniciando KafkaService() ----- properties()");
+        System.out.println("Iniciando KafkaConsumerService() ----- properties()");
         Properties properties = new Properties();
 
         //ONDE VAI BUSCAR AS MENSAGENS

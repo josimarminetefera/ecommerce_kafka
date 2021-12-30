@@ -10,6 +10,7 @@ public class NewOrderMain {
         try (KafkaProdutor kafkaProdutorOrdem = new KafkaProdutor<Order>()) {
             try (KafkaProdutor kafkaProdutorEmail = new KafkaProdutor<String>()) {
                 for (int i = 0; i < 10; i++) {
+                    System.out.println("-----------------------------------------------------");
                     //CHAVE DO PRODUTOR
                     String userId = UUID.randomUUID().toString();
                     //CODIGO DA ORDEM

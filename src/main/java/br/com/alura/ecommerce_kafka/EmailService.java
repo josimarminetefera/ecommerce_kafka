@@ -7,7 +7,11 @@ public class EmailService {
     public static void main(String[] args) {
         System.out.println("Iniciando EmailService() ............");
         EmailService emailService = new EmailService();
-        try (KafkaConsumerService kafkaConsumerService = new KafkaConsumerService(EmailService.class.getSimpleName(), "ECOMMERCE_SEND_EMAIL", emailService::parse)) {
+        try (KafkaConsumerService kafkaConsumerService = new KafkaConsumerService(
+                EmailService.class.getSimpleName(),
+                "ECOMMERCE_SEND_EMAIL",
+                emailService::parse
+        )) {
             kafkaConsumerService.run();
         }
     }

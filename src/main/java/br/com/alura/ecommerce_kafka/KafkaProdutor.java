@@ -10,14 +10,14 @@ import java.io.Closeable;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 
-class KafkaProdutor implements Closeable {
+class KafkaProdutor<T> implements Closeable {
     //ENVIAR UMA MENSAGEM NO KAFKA
-    private final KafkaProducer<String, String> producer;
+    private final KafkaProducer<String, T> producer;
 
     KafkaProdutor() {
         System.out.println("Iniciando KafkaProdutor() ............");
         //ESTANCIANDO O PRODUTOR
-        this.producer = new KafkaProducer<String, String>(properties());
+        this.producer = new KafkaProducer<String, T>(properties());
     }
 
     private static Properties properties() {
@@ -26,12 +26,12 @@ class KafkaProdutor implements Closeable {
         //ONDE VAI CONECTAR O KAFKA
         properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:9092");
         //TEM QUE TRANSFORMAR A KEY E O VALOR DO KafkaProducer DE STRING PARA BYTE
-        properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+        properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, GsonSerializer.class.getName());
         properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         return properties;
     }
 
-    void send(String topic, String key, String value) throws ExecutionException, InterruptedException {
+    void send(String topic, String key, T value) throws ExecutionException, InterruptedException {
         System.out.println("Iniciando KafkaProdutor() ------ send()");
         //CALBACK PARA AGUARDAR E PEGAR A RESPOSTA ASSIM QUE CHEGAR
         Callback callback = (data, ex) -> {

@@ -7,6 +7,8 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 import java.util.regex.Pattern;
 
@@ -14,10 +16,14 @@ public class LogService {
     public static void main(String[] args) {
         System.out.println("Iniciando LogService() ............");
         LogService logService = new LogService();
+        Map<String, String> propriedades = new HashMap<String, String>();
+        propriedades.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         try (KafkaConsumerService kafkaConsumerService = new KafkaConsumerService(
                 LogService.class.getSimpleName(),
                 Pattern.compile("ECOMMERCE.*"),
-                logService::parse
+                logService::parse,
+                String.class,
+                propriedades
         )) {
             kafkaConsumerService.run();
         }

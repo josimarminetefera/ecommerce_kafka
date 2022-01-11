@@ -7,8 +7,9 @@ import java.util.concurrent.ExecutionException;
 public class NewOrderMain {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         System.out.println("Iniciando NewOrderMain() ............");
+        //QUANDO ENVIAMOS UMA MENSAGEM SERÁ OU UMA ORDER OU UM EMAIL
         try (KafkaProdutor kafkaProdutorOrdem = new KafkaProdutor<Order>()) {
-            try (KafkaProdutor kafkaProdutorEmail = new KafkaProdutor<String>()) {
+            try (KafkaProdutor kafkaProdutorEmail = new KafkaProdutor<Email>()) {
                 for (int i = 0; i < 10; i++) {
                     System.out.println("-----------------------------------------------------");
                     //CHAVE DO PRODUTOR
